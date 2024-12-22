@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Specification.IntegrationTests.Domain;
 using Specification.IntegrationTests.Infrastructure;
-using Specification.IntegrationTests.Internal;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
