@@ -2,7 +2,8 @@
 
   <PropertyGroup>
 	<!-- The tricky part is that only latest sdk can respect properly each TargetFrameworks entry. It means if you plan to release new package version you have to use latest sdk version. -->
-	<!-- These entries are needed for unit tests for older platform versions. -->
+	  <TargetFrameworks>net6.0;net8.0;net9.0</TargetFrameworks>
+	  <!-- These entries are needed for unit tests for older platform versions. -->
 
 	<TargetFramework Condition="'$(Framework)' == 'net6.0'">net6.0</TargetFramework>
 	<TargetFramework Condition="'$(Framework)' == 'net8.0'">net8.0</TargetFramework>
