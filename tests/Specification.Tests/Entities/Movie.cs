@@ -15,6 +15,7 @@ namespace Specification.Tests.Entities
     {
         G = 1,
         PG13 = 2,
-        R = 3
+        R = 3,
+        M = 4
     }
 }

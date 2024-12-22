@@ -113,7 +113,7 @@ namespace Specification.IntegrationTests
                 .Include(o => o.Products)
                 .Where(spec);
 
-            var sql = query.ToSql();
+            var sql = query.ToQueryString();
 
             var order = query.FirstOrDefault();
 
@@ -135,7 +135,7 @@ namespace Specification.IntegrationTests
                 .Include(o => o.Products)
                 .Where(spec);
 
-            var sql = query.ToSql();
+            var sql = query.ToQueryString();
 
             var order = query.FirstOrDefault(spec);
 
@@ -155,7 +155,7 @@ namespace Specification.IntegrationTests
                 .Include(o => o.Products)
                 .Where(spec);
 
-            var sql = query.ToSql();
+            var sql = query.ToQueryString();
             
             var orders = query.ToList();
 
@@ -177,7 +177,7 @@ namespace Specification.IntegrationTests
                 .Include(o => o.Products)
                 .Where(spec);
 
-            var sql = query.ToSql();
+            var sql = query.ToQueryString();
 
             var orders = query.ToList();
 
@@ -199,7 +199,7 @@ namespace Specification.IntegrationTests
                 .Include(o => o.Products)
                 .Where(spec);
 
-            var sql = query.ToSql();
+            var sql = query.ToQueryString();
 
             var orders = query.ToList();
 
@@ -223,7 +223,7 @@ namespace Specification.IntegrationTests
                 .Include(o => o.Products)
                 .Where(spec1 & spec2);
 
-            var sql = query.ToSql();
+            var sql = query.ToQueryString();
 
             var orders = query.ToList();
 
@@ -248,7 +248,7 @@ namespace Specification.IntegrationTests
                 .Include(o => o.Products)
                 .Where(spec1 & spec2);
 
-            var sql = query.ToSql();
+            var sql = query.ToQueryString();
 
             var orders = query.ToList();
 
@@ -272,7 +272,7 @@ namespace Specification.IntegrationTests
                 .Include(o => o.Products)
                 .Where(spec);
 
-            var sql = query.ToSql();
+            var sql = query.ToQueryString();
 
             var order = query.FirstOrDefault();
 
@@ -280,7 +280,7 @@ namespace Specification.IntegrationTests
             Assert.Equal(1, order.Id);
             Assert.Equal(3, order.Products.Count());
 
-            Assert.Matches("NOT .+\"Status\" = 'packed'", sql); 
+            Assert.Matches("\"Status\" <> 'packed'", sql); 
         }
         
         [Fact]
@@ -296,7 +296,7 @@ namespace Specification.IntegrationTests
                 .Include(o => o.Products)
                 .Where(spec1.Or(spec2));
 
-            var sql = query.ToSql();
+            var sql = query.ToQueryString();
 
             var orders = query.ToList();
 

@@ -2,27 +2,65 @@
 
   <PropertyGroup>
 	<!-- The tricky part is that only latest sdk can respect properly each TargetFrameworks entry. It means if you plan to release new package version you have to use latest sdk version. -->
-	<TargetFrameworks Condition="'$(Framework)' != 'net5.0' and '$(Framework)' != 'netcoreapp3.1'">netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+	  <TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net8.0;net9.0</TargetFrameworks>
 	<!-- These entries are needed for unit tests for older platform versions. -->
+
 	<TargetFramework Condition="'$(Framework)' == 'net5.0'">net5.0</TargetFramework>
+	<TargetFramework Condition="'$(Framework)' == 'net6.0'">net6.0</TargetFramework>
+	<TargetFramework Condition="'$(Framework)' == 'net8.0'">net8.0</TargetFramework>
+	<TargetFramework Condition="'$(Framework)' == 'net9.0'">net9.0</TargetFramework>
 	<TargetFramework Condition="'$(Framework)' == 'netcoreapp3.1'">netcoreapp3.1</TargetFramework>
 	<LangVersion>8.0</LangVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
-	<PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
-	<PackageReference Include="coverlet.msbuild" Version="3.1.0">
-		<PrivateAssets>all</PrivateAssets>
-		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	</PackageReference>
-    <PackageReference Include="coverlet.collector" Version="3.1.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+	  
+	  <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" />
+	  <PackageReference Include="coverlet.msbuild" Version="3.1.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="coverlet.collector" Version="3.1.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
   </ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" />
+		<PackageReference Include="coverlet.msbuild" Version="3.1.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="3.1.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.0.0" />
+		<PackageReference Include="coverlet.msbuild" Version="6.0.2" />
+		<PackageReference Include="coverlet.collector" Version="6.0.2" />
+	</ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+	  <PackageReference Include="xunit.runner.visualstudio" Version="3.0.0" />
+	  <PackageReference Include="coverlet.msbuild" Version="6.0.2" />
+	  <PackageReference Include="coverlet.collector" Version="6.0.2" />
+  </ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.0.0" />
+		<PackageReference Include="coverlet.msbuild" Version="6.0.2" />
+		<PackageReference Include="coverlet.collector" Version="6.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+		<PackageReference Include="xunit" Version="2.9.2" />
+	</ItemGroup>
 	
   <ItemGroup>
     <ProjectReference Include="..\..\src\Specification\Specification.csproj" />

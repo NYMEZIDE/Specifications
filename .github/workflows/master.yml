@@ -12,9 +12,11 @@ jobs:
     strategy:
       matrix:
         dotnet: [
-          { framework: netstandard2.1, conditionframework: netcoreapp3.1, version: 3.1.x },
-          { framework: net5.0, conditionframework: net5.0, version: 5.0.x },
-          { framework: net6.0, conditionframework: net6.0, version: 6.0.x },
+          { framework: netcoreapp3.1, version: 3.1.x },
+          { framework: net5.0, version: 5.0.x },
+          { framework: net6.0, version: 6.0.x },
+          { framework: net8.0, version: 8.0.x },
+          { framework: net9.0, version: 9.0.x },
         ]
 
     name: ${{ matrix.dotnet.framework }} – run tests
@@ -29,15 +31,15 @@ jobs:
 
       - name: Run build
         run: |
-          dotnet build --configuration Release --framework ${{ matrix.dotnet.framework }} ./src/Specification/Specification.csproj /p:Framework=${{ matrix.dotnet.conditionframework }}
+          dotnet build --configuration Release --framework ${{ matrix.dotnet.framework }} ./src/Specification/Specification.csproj /p:Framework=${{ matrix.dotnet.framework }}
 
       - name: Run UnitTests
         run: |    
-          dotnet test --configuration Release --framework ${{ matrix.dotnet.conditionframework }} ./tests/Specification.Tests/Specification.Tests.csproj /p:Framework=${{ matrix.dotnet.conditionframework }}
+          dotnet test --configuration Release --framework ${{ matrix.dotnet.framework }} ./tests/Specification.Tests/Specification.Tests.csproj /p:Framework=${{ matrix.dotnet.framework }}
 
       - name: Run IntegrationTests
         run: |    
-          dotnet test --configuration Release --framework ${{ matrix.dotnet.conditionframework }} ./tests/Specification.IntegrationTests/Specification.IntegrationTests.csproj /p:Framework=${{ matrix.dotnet.conditionframework }}
+          dotnet test --configuration Release --framework ${{ matrix.dotnet.framework }} ./tests/Specification.IntegrationTests/Specification.IntegrationTests.csproj /p:Framework=${{ matrix.dotnet.framework }}
 
 
   coveralls-started:
@@ -52,11 +54,11 @@ jobs:
 
       - name: Run UnitTests
         run:     
-          dotnet test --configuration Release --framework net6.0 ./tests/Specification.Tests/Specification.Tests.csproj /p:Framework=net6.0 /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --logger:trx -r TestResults
+          dotnet test --configuration Release --framework net8.0 ./tests/Specification.Tests/Specification.Tests.csproj /p:Framework=net8.0 /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --logger:trx -r TestResults
       
       - name: Run IntegrationTests
         run:    
-          dotnet test --configuration Release --framework net6.0 ./tests/Specification.IntegrationTests/Specification.IntegrationTests.csproj /p:Framework=net6.0 /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --logger:trx -r TestResults
+          dotnet test --configuration Release --framework net8.0 ./tests/Specification.IntegrationTests/Specification.IntegrationTests.csproj /p:Framework=net8.0 /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --logger:trx -r TestResults
       
       - name: Publish coverage report to coveralls.io   
         uses: coverallsapp/github-action@master   
@@ -64,7 +66,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: run-Specification.Tests
           parallel: true
-          path-to-lcov: ./tests/Specification.Tests/TestResults/coverage.net6.0.info
+          path-to-lcov: ./tests/Specification.Tests/TestResults/coverage.net8.0.info
 
       - name: Publish coverage report to coveralls.io   
         uses: coverallsapp/github-action@master   
@@ -72,7 +74,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: run-Specification.IntegrationTests
           parallel: true
-          path-to-lcov: ./tests/Specification.IntegrationTests/TestResults/coverage.net6.0.info
+          path-to-lcov: ./tests/Specification.IntegrationTests/TestResults/coverage.net8.0.info
       
 
   coveralls-finished:
