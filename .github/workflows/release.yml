@@ -9,15 +9,7 @@ jobs:
   build-tests:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        dotnet: [
-          { framework: net6.0, version: 6.0.x },
-          { framework: net8.0, version: 8.0.x },
-          { framework: net9.0, version: 9.0.x },
-        ]
-
-    name: ${{ matrix.dotnet.framework }} – run tests
+    name: Build, Tests, Nuget
 
     steps:
       - uses: actions/checkout@v3
@@ -25,19 +17,29 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ matrix.dotnet.version }}
+          dotnet-version: 6.0.õ
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.õ
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.0.x
 
       - name: Run build
         run: |
-          dotnet build --configuration Release --framework ${{ matrix.dotnet.framework }} ./src/Specification/Specification.csproj /p:Framework=${{ matrix.dotnet.framework }}
+          dotnet build --configuration Release ./src/Specification/Specification.csproj
 
       - name: Run UnitTests
         run: |    
-          dotnet test --configuration Release --framework ${{ matrix.dotnet.framework }} ./tests/Specification.Tests/Specification.Tests.csproj /p:Framework=${{ matrix.dotnet.framework }}
+          dotnet test --configuration Release ./tests/Specification.Tests/Specification.Tests.csproj
 
       - name: Run IntegrationTests
         run: |    
-          dotnet test --configuration Release --framework ${{ matrix.dotnet.framework }} ./tests/Specification.IntegrationTests/Specification.IntegrationTests.csproj /p:Framework=${{ matrix.dotnet.framework }}
+          dotnet test --configuration Release ./tests/Specification.IntegrationTests/Specification.IntegrationTests.csproj
   
   build-and-publish:
     needs: build-tests
@@ -71,14 +73,27 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 6.0.õ
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.õ
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.0.x
 
       - name: Build and publish library to NuGet
         run: |
-          dotnet build --configuration Release ./src/Specification/Specification.csproj
+          dotnet build --configuration Release ./src/Specification/Specification.csproj 
           dotnet pack --no-restore --no-build --configuration Release --version-suffix "${{ steps.extract-version-suffix.outputs.version_suffix }}" --output out/ ./src/Specification/Specification.csproj
-          dotnet nuget push out/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
-          
+       
+      - name: Upload to Nuget
+        run: |
+            dotnet nuget push out/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+
       - uses: actions/upload-artifact@v2
         with:
           name: NuGet package
