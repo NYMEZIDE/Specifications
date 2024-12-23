@@ -17,12 +17,12 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.õ
+          dotnet-version: 6.0.x
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.õ
+          dotnet-version: 8.0.x
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
